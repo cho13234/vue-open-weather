@@ -17,10 +17,27 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14'
+    - name: Cache Node Modules
+      id: node-cache
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: frontend/node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+        restore-key: |
+          ${{ runner.os }}-node-modules-
     - name: Install NPM Dependencies
+      if: steps.node-cache.outputs.cache-hit != 'true'
       run: |
         cd ./frontend
         npm install
+    - name: Create Env File
+      env:
+        ENVIRONMENT_VARIABLES: ${{ secrets.ENVIROMNENT_VARIABLES }}
+      shell: bash
+      run: |
+        echo "$ENVIROMENT_VARIABLES" > .env
     - name: Run NPM Build
       run: |
         cd ./frontend
