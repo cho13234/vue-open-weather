@@ -25,7 +25,7 @@ jobs:
       with:
         path: frontend/node_modules
         key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-        restore-key: |
+        restore-keys: |
           ${{ runner.os }}-node-modules-
     - name: Install NPM Dependencies
       if: steps.node-cache.outputs.cache-hit != 'true'
@@ -58,7 +58,7 @@ jobs:
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-key: |
+        restore-keys: |
           ${{ runner.os }}-maven-
     - name: Build with maven
       run: mvn package -B -DskipTests
