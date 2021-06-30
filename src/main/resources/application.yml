@@ -1,0 +1,20 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 200
+spring:
+  application:
+    name: "springboot-webservice"
+#DB Setting
+  common:
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://rds-mariadb-1.c71rqnr1tpfo.ap-northeast-2.rds.amazonaws.com
+      username: admin
+      password: qpalzm1!
+      sql-script-encoding: UTF-8

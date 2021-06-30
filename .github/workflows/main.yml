@@ -1,4 +1,4 @@
-name: CICD to Firebase
+name: CI
 
 on:
   push:
@@ -32,17 +32,43 @@ jobs:
       run: |
         cd ./frontend
         npm install
-    - name: Create Env File
-      env:
-        ENVIRONMENT_VARIABLES: ${{ secrets.ENVIROMNENT_VARIABLES }}
-      shell: bash
-      run: |
-        echo "$ENVIROMENT_VARIABLES" > .env
     - name: Run NPM Build
       run: |
         cd ./frontend
         npm run build
-#  mvn_build:
-#    runs-on: ubuntu-latest
-#    steps:
-#    - run: mvn build
+    - name: Archive Production Artifacts
+      uses: actions/upload-artifact@v2
+      with: 
+        name: npm_build_result
+        path: src/main/resources/static
+  mvn_build:
+    needs: npm_build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '8'
+    - name: Cache Maven Dependencies
+      id: maven-cache
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-maven-dependencies
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-key: |
+          ${{ runner.os }}-maven-
+    - name: Build with maven
+      run: mvn package -B -DskipTests
+    - name: Archive Production Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: maven_build_result
+        path: target/*.war
+  aws_deploy:
+    needs: [npm_build, mvn_build]
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "AWS DEPLOY STAGE"
