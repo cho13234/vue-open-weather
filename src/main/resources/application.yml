@@ -22,23 +22,9 @@ spring:
     sql-script-encoding: UTF-8
 ---
 server:
-  port: 8081
+  port: 8080
 spring:
-  profiles: set1
-  datasource:
-    url: jdbc:mariadb://rds-mariadb-1.c71rqnr1tpfo.ap-northeast-2.rds.amazonaws.com:3306/COMMON
-    username: admin
-    password: qpalzm1!
-    driver-class-name: org.mariadb.jdbc.Driver
-    sql-script-encoding: UTF-8
-  application:
-    name: "springboot-webservice"
-
----
-server:
-  port: 8082
-spring:
-  profiles: set2
+  profiles: real
   datasource:
     url: jdbc:mariadb://rds-mariadb-1.c71rqnr1tpfo.ap-northeast-2.rds.amazonaws.com:3306/COMMON
     username: admin

@@ -77,10 +77,7 @@ jobs:
       run: mvn package -B -DskipTests
       
     - name: Zip build file and deploy sh
-      run: |
-        mv target/spring-boot-vue-test-*.jar ./
-        mv scripts/*.sh ./
-        zip bundle.zip ./appspec.yml ./profile.sh ./start.sh ./stop.sh ./health.sh ./switch.sh ./spring-boot-vue-test-*.jar
+      run: zip bundle.zip ./appspec.yml scripts/deploy.sh target/*.jar
       shell: bash
 
     - name: Archive Production Artifacts
