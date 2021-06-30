@@ -80,7 +80,7 @@ jobs:
       run: |
         mv target/spring-boot-vue-test-*.war ./
         mv scripts/*.sh ./
-        zip bundle.zip ./appspec.yml, ./profile.sh, ./start.sh, ./stop.sh, ./health.sh, ./switch.sh, ./spring-boot-vue-test-*.war
+        zip bundle.zip ./appspec.yml ./profile.sh ./start.sh ./stop.sh ./health.sh ./switch.sh ./spring-boot-vue-test-*.war
       shell: bash
 
     - name: Archive Production Artifacts
