@@ -78,9 +78,9 @@ jobs:
       
     - name: Zip build file and deploy sh
       run: |
-        mv target/spring-boot-vue-test-*.war ./
+        mv target/spring-boot-vue-test-*.jar ./
         mv scripts/*.sh ./
-        zip bundle.zip ./appspec.yml ./profile.sh ./start.sh ./stop.sh ./health.sh ./switch.sh ./spring-boot-vue-test-*.war
+        zip bundle.zip ./appspec.yml ./profile.sh ./start.sh ./stop.sh ./health.sh ./switch.sh ./spring-boot-vue-test-*.jar
       shell: bash
 
     - name: Archive Production Artifacts
