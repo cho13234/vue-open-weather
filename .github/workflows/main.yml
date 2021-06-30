@@ -60,6 +60,10 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+    - name: Download NPM Production Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: npm_build_result
     - name: Build with maven
       run: mvn package -B -DskipTests
     - name: Archive Production Artifacts
