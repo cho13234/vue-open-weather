@@ -71,6 +71,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: npm_build_result
+        path: src/main/resources/static
 
     - name: Build with maven
       run: mvn package -B -DskipTests
