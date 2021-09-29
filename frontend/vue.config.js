@@ -5,5 +5,27 @@ module.exports = {
 
     transpileDependencies: [
       'vuetify'
-    ]
+    ],
+
+    devServer: {
+      port: 3000,
+      //proxy: 'http://localhost:8080'
+      proxy: {
+        '^/api': {
+          target: 'http://localhost:8080',
+          ws: true,
+          secure: false,
+          changeOrigin: true,
+          pathRewrite: { '^/api': '/api' }
+        }
+      }
+    },
+
+    configureWebpack: config => {
+      if (process.env.NODE_ENV === 'production') {
+
+      } else {
+
+      }
+    }
 }
