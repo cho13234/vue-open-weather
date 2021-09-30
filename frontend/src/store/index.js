@@ -16,7 +16,9 @@ export default new Vuex.Store({
       pty: null, // 강수형태
       lgt: null, // 낙뢰
       vec: null, // 풍향
-      wsd: null // 풍속
+      wsd: null, // 풍속
+      uuu: null,
+      vvv: null
     },
     currentLocation: {
       nameeng: 'Seoul',
@@ -119,6 +121,12 @@ export default new Vuex.Store({
       state.currentWeatherInfo.wsd = payload.filter((obj) => {
         return obj.category == 'WSD' && obj.fcstTime == currentHour;
       })[0];
+      state.currentWeatherInfo.wsd = payload.filter((obj) => {
+        return obj.category == 'UUU' && obj.fcstTime == currentHour;
+      })[0];
+      state.currentWeatherInfo.wsd = payload.filter((obj) => {
+        return obj.category == 'VVV' && obj.fcstTime == currentHour;
+      })[0];
     }
   },
   getters: {
@@ -144,15 +152,15 @@ export default new Vuex.Store({
       
       let date = new Date();
       date.setHours(date.getHours() - 1);
-      let currentHour = "" + date.getHours() + "00";
-      let currentDay = "" + date.getDate();
+      let currentHour = "" + (date.getHours() >= 10 ? date.getHours() : "0" + date.getHours())  + "00";
+      let currentDay = "" + (date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
       let currentMonth = "" + ((date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1));
       let currentYear = "" + date.getFullYear();
       let currentDate = "" + currentYear + currentMonth + currentDay;
 
       const prm = {
         params: {
-          numOfRows: "50",
+          numOfRows: "100",
           pageNo: "1",
           baseDate: currentDate,
           baseTime: currentHour,
@@ -176,8 +184,9 @@ export default new Vuex.Store({
       console.log('----- store > fetchWeatherNowcast');
       
       let date = new Date();
-      let currentHour = "" + date.getHours() + "00";
-      let currentDay = "" + date.getDate();
+      date.setHours(date.getHours() - 1);
+      let currentHour = "" + (date.getHours() >= 10 ? date.getHours() : "0" + date.getHours()) + "00";
+      let currentDay = "" + (date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
       let currentMonth = "" + ((date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1));
       let currentYear = "" + date.getFullYear();
       let currentDate = "" + currentYear + currentMonth + currentDay;
