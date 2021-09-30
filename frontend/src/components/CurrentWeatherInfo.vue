@@ -63,7 +63,7 @@ export default {
 
 <style>
 .header-temperature {
-    position: absolute; width: 58px; height: 50px; left: 24px; top: 137px;
+    position: absolute; width: 58px; height: 50px; left: 24px; top: 37px;
 }
 .temperature-text {
     position: absolute;
@@ -99,7 +99,8 @@ export default {
     position: absolute;
     left: 22.93%;
     right: 50.93%;
-    top: 19.71%;
+    /* top: 19.71%; */
+    top: 60px;
     bottom: 78.33%;
 
     font-family: 'Nanum Myeongjo', 'Montserrat', sans-serif;
@@ -116,7 +117,7 @@ export default {
     height: 77.95px;
     /* left: 267px; */
     right: 24px;
-    top: 123px;
+    top: 23px;
     background-position: center;
 }
 .wheather-icon-big-inner {
@@ -131,7 +132,7 @@ export default {
     width: 135px;
     height: 26px;
     left: 24px;
-    top: 221px;
+    top: 121px;
 
     font-family: 'Montserrat', sans-serif;
     font-style: normal;
@@ -146,7 +147,7 @@ export default {
     width: 176px;
     height: 24px;
     left: 24px;
-    top: 253px;
+    top: 153px;
 
     font-family: 'Nanum Myeongjo', 'Montserrat', sans-serif;
     font-style: normal;

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div style="width:500px; height:1000px;"></div>
         <current-weather-info/>
     </div>
 </template>
