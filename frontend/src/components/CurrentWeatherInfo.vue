@@ -4,8 +4,9 @@
             <span class="temperature-text">{{ t1h }}</span>
             <span class="temperature-text-oppo">o</span>
         </div>
-        <span class="temperature-text-weather">|{{ sky }}</span>
-        <img class="weather-icon-big" :src="'/' + skyIcon" alt="">
+        <span class="temperature-text-weather">| {{ sky }}</span>
+        <div class="weather-icon-big" :style="'background-image:url(/2x' + skyIcon + ');'"></div>
+        <!-- <img class="weather-icon-big" :src=" + skyIcon" alt=""> -->
         <span class="current-location">
             Howdy, Alver
         </span>
@@ -48,7 +49,7 @@ export default {
             return parseInt(this.currentWeather.sky.fcstValue) <= 5 ? "맑음" : parseInt(this.currentWeather.sky.fcstValue) <= 8 ? "구름많음" : "흐림";
         },
         skyIcon() {
-            return this.sky == "맑음" ? "sunny.png" : this.sky == "구름많음" ? "half_sun.png" : "cloudy_grey.png";
+            return this.sky == "맑음" ? "/sunny.png" : this.sky == "구름많음" ? "/half_sun.png" : "/cloudy_grey.png";
         }
     },
     methods: {
@@ -71,7 +72,7 @@ export default {
     left: 0px;
     top: 6px;
 
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 42px;
@@ -86,7 +87,7 @@ export default {
     left: 47px;
     top: 0px;
 
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -98,23 +99,25 @@ export default {
     position: absolute;
     left: 22.93%;
     right: 50.93%;
-    top: 19.21%;
+    top: 19.71%;
     bottom: 78.33%;
 
-    font-family: Montserrat;
+    font-family: 'Nanum Myeongjo', 'Montserrat', sans-serif;
     font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 24px;
     line-height: 20px;
 
     color: #000000;
 }
 .weather-icon-big {
     position: absolute;
-    width: 80px;
+    width: 94px;
     height: 77.95px;
-    left: 267px;
+    /* left: 267px; */
+    right: 24px;
     top: 123px;
+    background-position: center;
 }
 .wheather-icon-big-inner {
     position: absolute;
@@ -130,7 +133,7 @@ export default {
     left: 24px;
     top: 221px;
 
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
@@ -144,5 +147,8 @@ export default {
     height: 24px;
     left: 24px;
     top: 253px;
+
+    font-family: 'Nanum Myeongjo', 'Montserrat', sans-serif;
+    font-style: normal;
 }
 </style>
