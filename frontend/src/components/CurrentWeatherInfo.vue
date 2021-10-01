@@ -30,7 +30,7 @@
                 <v-col cols="4" align="center">
                     <span style="font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 16px; line-height: 26px; color: #000000;">{{ vec }}</span>
                     <br/>
-                    <span style="font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 14px; line-height: 14px; color: #000000;">Wind Direction</span>
+                    <span style="font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 14px; line-height: 14px; color: #000000;">W Direction</span>
                 </v-col>
                 <v-col cols="4" align="center">
                     <span style="font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 16px; line-height: 26px; color: #000000;">{{ wsd }}</span>
@@ -91,7 +91,8 @@ export default {
             return this.currentWeather ? this.currentWeather.reh ? this.currentWeather.reh.fcstValue ? this.currentWeather.reh.fcstValue : '' : '' : '';
         },
         vec() {
-            return this.currentWeather ? this.currentWeather.vec ? this.currentWeather.vec.fcstValue ? this.currentWeather.vec.fcstValue : '' : '' : '';
+            let vec = this.currentWeather ? this.currentWeather.vec ? this.currentWeather.vec.fcstValue ? this.currentWeather.vec.fcstValue : '' : '' : '';
+            return vec <= 45 ? 'N-NE' : vec <= 90 ? 'NE-E' : vec <= 135 ? 'E-SE' : vec <= 180 ? 'SE-S' : vec <= 225 ? 'S-SW' : vec <= 270 ? 'SW-W' : vec <= 315 ? 'W-NW' : 'NW-N';
         },
         wsd() {
             return this.currentWeather ? this.currentWeather.wsd ? this.currentWeather.wsd.fcstValue ? this.currentWeather.wsd.fcstValue : '' : '' : '';
