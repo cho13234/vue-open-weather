@@ -1,31 +1,38 @@
 <template>
-  <v-app style="background-color: rgb(233,233,233);">
-    <v-app-bar app flat color="transparent">
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      
-      <v-spacer></v-spacer>
-      
-      <v-toolbar-title style="font-family: 'Ubuntu', sans-serif; font-weight: 300; font-size: 22px; line-height: 25.28px">Weather</v-toolbar-title>
-      
-      <v-spacer></v-spacer>
-      
-      <v-btn icon>
-        <v-icon>mdi-chevron-down</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-main>
-      <router-view/>
-    </v-main>
-  </v-app>
+    <v-app style="background-color: rgb(233,233,233);">
+        <v-app-bar app flat color="transparent">
+            <v-app-bar-nav-icon></v-app-bar-nav-icon>
+            
+            <v-spacer></v-spacer>
+            
+            <v-toolbar-title style="font-family: 'Ubuntu', sans-serif; font-weight: 300; font-size: 22px; line-height: 25.28px">Weather</v-toolbar-title>
+            
+            <v-spacer></v-spacer>
+            
+            <v-btn icon>
+            <v-icon>mdi-chevron-down</v-icon>
+            </v-btn>
+        </v-app-bar>
+        <v-main>
+            <router-view/>
+        </v-main>
+    </v-app>
 </template>
 
 <script>
-export default {
-  name: 'App',
+import { mapGetters } from 'vuex';
 
-  data: () => ({
-    //
-  }),
+export default {
+    name: 'App',
+
+    data: () => ({
+        //
+    }),
+    computed: {
+        ...mapGetters({
+            locations: 'getLocations',
+        })
+    }
 };
 </script>
 
