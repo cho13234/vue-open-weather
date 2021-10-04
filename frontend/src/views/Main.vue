@@ -3,6 +3,7 @@
         <v-layout wrap>
             <v-row>
                 <v-col>
+                    <locations/>
                     <current-weather-info/>
                     <next-weather-info/>
                     <next-week-weather-info/>
@@ -16,11 +17,12 @@
 import { mapGetters, mapActions } from 'vuex';
 
 import CurrentWeatherInfo from '../components/CurrentWeatherInfo.vue'
+import Locations from '../components/Locations.vue';
 import NextWeatherInfo from '../components/NextWeatherInfo.vue'
 import NextWeekWeatherInfo from '../components/NextWeekWeatherInfo.vue'
 
 export default {
-    components: { CurrentWeatherInfo, NextWeatherInfo, NextWeekWeatherInfo },
+    components: { CurrentWeatherInfo, NextWeatherInfo, NextWeekWeatherInfo, Locations },
     name: 'Main',
     created() {
         this.getWeatherNowcast(this.currentLocation);

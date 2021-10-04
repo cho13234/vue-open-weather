@@ -9,30 +9,6 @@
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(item) }}</span>
                 </v-col>
-                <!-- <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArr[1] ? nhArr[1].skyIcon : ''" contain height="73px"></v-img>
-                    <span class="bottom-t1h-bold">{{ nhArr[1] ? nhArr[1].T1H : 0 }}&deg;</span>
-                    <br/>
-                    <span class="bottom-time-regular">{{ getHourDesc(nhArr[1]) }}</span>
-                </v-col>
-                <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArr[2] ? nhArr[2].skyIcon : ''" contain height="73px"></v-img>
-                    <span class="bottom-t1h-bold">{{ nhArr[2] ? nhArr[2].T1H : 0 }}&deg;</span>
-                    <br/>
-                    <span class="bottom-time-regular">{{ getHourDesc(nhArr[2]) }}</span>
-                </v-col>
-                <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArr[3] ? nhArr[3].skyIcon : ''" contain height="73px"></v-img>
-                    <span class="bottom-t1h-bold">{{ nhArr[3] ? nhArr[3].T1H : 0 }}&deg;</span>
-                    <br/>
-                    <span class="bottom-time-regular">{{ getHourDesc(nhArr[3]) }}</span>
-                </v-col>
-                <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArr[4] ? nhArr[4].skyIcon : ''" contain height="73px"></v-img>
-                    <span class="bottom-t1h-bold">{{ nhArr[4] ? nhArr[4].T1H : 0 }}&deg;</span>
-                    <br/>
-                    <span class="bottom-time-regular">{{ getHourDesc(nhArr[4]) }}</span>
-                </v-col> -->
             </v-row>
         </v-card-text>
     </v-card>

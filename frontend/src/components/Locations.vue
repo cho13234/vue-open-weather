@@ -1,34 +1,42 @@
 <template>
-    <div class="locations">
-        <v-btn type="button" class="btn-location"
-            :class="{ active : this.$route.params.id == 'MyLocation' }"
-            @click="goToLocation('MyLocation')"
-        >
-            내 위치
-        </v-btn>
-        <v-btn type="button" class="btn-location"
-            v-for="(item, index) in locations" :key="index"
-            :class="{ active : local == item.nameeng }"
-            @click="goToLocation(item.nameeng)"
-        >
-            {{ item.namekor }}
-        </v-btn>
-    </div>
+    <v-card flat tile class="mx-auto" max-width="333px" width="95%" style="margin-top: 10px;">
+        <v-chip-group active-class="primary--text" mandatory style="margin-left: 10px; margin-right: 10px;">
+            <v-chip label link v-for="(item, index) in locations" :key="index" @click="relocation(item)"
+                style="font-family: 'Noto Sans Kr', 'Ubuntu', sans-serif; font-style: normal; font-weight: 500; font-size: 13px; line-height: 16px;">
+                {{ item.namekor }}
+            </v-chip>
+        </v-chip-group>
+    </v-card>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
     props: {
         local: String
     },
     computed: {
-        locations() {
-            return this.$store.state.locations;
-        }
+        ...mapGetters({
+            locations: 'getLocations',
+            currentLocation: 'getCurrentLocation'
+        })
     },
     methods: {
-        goToLocation(local) {
-            this.$router.push('/location/' + local);
+        ...mapActions({
+            getWeatherForecast: 'fetchWeatherForecast',
+            getWeatherNowcast: 'fetchWeatherNowcast',
+            getMidLandFcst: 'fetchMidLandFcst',
+            getMidTa: 'fetchMidTa'
+        }),
+        relocation(location) {
+            console.log(location);
+            this.$store.commit('setCurrentLocation', location);
+
+            this.getWeatherNowcast(this.currentLocation);
+            this.getWeatherForecast(this.currentLocation);
+            this.getMidLandFcst(this.currentLocation);
+            this.getMidTa(this.currentLocation);
         }
     }
 }

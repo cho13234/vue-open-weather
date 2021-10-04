@@ -132,7 +132,7 @@ export default new Vuex.Store({
             state.beforeYear = "" + date.getFullYear();
             state.beforeDate = "" + state.beforeYear + state.beforeMonth + state.beforeDay;
         },
-        setCurrentLocations(state, payload) {
+        setCurrentLocation(state, payload) {
             state.currentLocation = payload;
         },
         setForecastWeather(state, payload) {
