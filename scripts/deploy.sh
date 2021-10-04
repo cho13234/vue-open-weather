@@ -4,7 +4,7 @@ REPOSITORY=/home/ec2-user/app
 PROJECT_NAME=spring-boot-vue-test
 
 echo "> Build 파일 복사"
-cp $REPOSITORY/deploy/target/*.jar $REPOSITORY/
+sudo cp -f $REPOSITORY/deploy/target/*.jar $REPOSITORY/
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
