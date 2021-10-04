@@ -1,4 +1,4 @@
-package com.hli.study.springboot.common;
+package com.hli.study.springboot.common.controller;
 
 import java.util.Arrays;
 

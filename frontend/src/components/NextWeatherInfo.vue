@@ -4,31 +4,31 @@
         <v-card-text style="padding-bottom: 30px;">
             <v-row align="center">
                 <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArrSkyIcon[0]" contain height="73px"></v-img>
+                    <v-img max-width="40px" :src="nhArr[0] ? nhArr[0].skyIcon : ''" contain height="73px"></v-img>
                     <span class="bottom-t1h-bold">{{ nhArr[0] ? nhArr[0].T1H : 0 }}&deg;</span>
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(nhArr[0]) }}</span>
                 </v-col>
                 <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArrSkyIcon[1]" contain height="73px"></v-img>
+                    <v-img max-width="40px" :src="nhArr[1] ? nhArr[1].skyIcon : ''" contain height="73px"></v-img>
                     <span class="bottom-t1h-bold">{{ nhArr[1] ? nhArr[1].T1H : 0 }}&deg;</span>
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(nhArr[1]) }}</span>
                 </v-col>
                 <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArrSkyIcon[2]" contain height="73px"></v-img>
+                    <v-img max-width="40px" :src="nhArr[2] ? nhArr[2].skyIcon : ''" contain height="73px"></v-img>
                     <span class="bottom-t1h-bold">{{ nhArr[2] ? nhArr[2].T1H : 0 }}&deg;</span>
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(nhArr[2]) }}</span>
                 </v-col>
                 <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArrSkyIcon[3]" contain height="73px"></v-img>
+                    <v-img max-width="40px" :src="nhArr[3] ? nhArr[3].skyIcon : ''" contain height="73px"></v-img>
                     <span class="bottom-t1h-bold">{{ nhArr[3] ? nhArr[3].T1H : 0 }}&deg;</span>
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(nhArr[3]) }}</span>
                 </v-col>
                 <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArrSkyIcon[4]" contain height="73px"></v-img>
+                    <v-img max-width="40px" :src="nhArr[4] ? nhArr[4].skyIcon : ''" contain height="73px"></v-img>
                     <span class="bottom-t1h-bold">{{ nhArr[4] ? nhArr[4].T1H : 0 }}&deg;</span>
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(nhArr[4]) }}</span>
@@ -48,28 +48,18 @@ export default {
     },
     computed: {
         ...mapGetters({
-            currentHour: 'getCurrentHour'
+            currentHour: 'getCurrentHour',
+            nhArr: 'getNhArr',
+            // getSkyDesc: 'getSkyDesc'
         }),
-        nhArr() {
-            let arr = [];
-            for (var i = 1; i < 6; i++) {
-                let val = this.$store.getters.getNextNhSummary(i);
-                
-                if (val.length < 3) return [];
-
-                arr.push(val.map((obj) => { return { cat: obj.category, val: obj.fcstValue, date: obj.fcstDate, time: obj.fcstTime } })
-                    .reduce((newObj, obj) => { newObj[obj.cat] = obj.val; newObj['date'] = obj.date; newObj['time'] = obj.time; return newObj; }, []));
-            }
-            return arr;
-        },
-        nhArrSkyIcon() {
-            let arr = [];
-            for (var i in this.nhArr) {
-                if (Object.keys(this.nhArr[i]).length <= 0) return ["", "", "", "", ""];
-                arr.push(this.getSkyIcon(this.getSkyDesc(this.nhArr[i]['SKY'], this.nhArr[i]['PTY'])));
-            }
-            return arr.length > 0 ? arr : ["", "", "", "", ""];
-        }
+        // nhArrSkyIcon() {
+        //     let arr = [];
+        //     for (var i in this.nhArr) {
+        //         if (Object.keys(this.nhArr[i]).length <= 0) return ["", "", "", "", ""];
+        //         arr.push(this.getSkyIcon(this.getSkyDesc(this.nhArr[i]['SKY'], this.nhArr[i]['PTY'])));
+        //     }
+        //     return arr.length > 0 ? arr : ["", "", "", "", ""];
+        // }
     },
     methods: {
         getHourDesc(obj) {
@@ -79,9 +69,10 @@ export default {
             let hour = obj.time.slice(0,2) + ":00";
             return date + " " + hour;
         },
-        getSkyDesc(sky) {
-            return sky == '' ? "없음" : parseInt(sky) <= 5 ? "맑음" : parseInt(sky) <= 8 ? "구름많음" : "흐림";
-        },
+        // getSkyDesc(sky) {
+        //     return sky == '' ? "없음" : parseInt(sky) == 1 ? "맑음" : parseInt(sky) == 3 ? "구름많음" : parseInt(sky) == 4 ? "흐림" : "없음";
+        //     // return sky == '' ? "없음" : parseInt(sky) <= 5 ? "맑음" : parseInt(sky) <= 8 ? "구름많음" : "흐림";
+        // },
         getSkyIcon(sky, pty) {
             let curSunStat = (parseInt(this.currentHour) > 20 || parseInt(this.currentHour) <= 6) ? 'moon' : 'sunny';
 

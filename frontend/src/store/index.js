@@ -135,6 +135,31 @@ export default new Vuex.Store({
         getLocations: (state) => {
             return state.locations;
         },
+        getSkyDesc: () => (sky) => {
+            return sky == '' ? "없음" : parseInt(sky) == 1 ? "맑음" : parseInt(sky) == 3 ? "구름많음" : parseInt(sky) == 4 ? "흐림" : "없음";
+        },
+        getSkyIcon: (getters) => (sky, pty) => {
+            let curSunStat = (parseInt(getters.currentHour) > 20 || parseInt(getters.currentHour) <= 6) ? 'moon' : 'sunny';
+
+            switch(parseInt(pty)) {
+                case 0:
+                    return sky == "맑음" ? "/weather_icon/" + curSunStat + ".png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy.png" : "/weather_icon/cloudy.png";
+                case 1: // 비
+                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_heavy rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_heavy rain.png" : "/weather_icon/cloudy_heavy rain.png";
+                case 2: // 비/눈
+                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : "/weather_icon/cloudy_snow_rain.png";
+                case 3: // 눈
+                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : "/weather_icon/cloudy_heavy snow.png";
+                case 5: // 빗방울
+                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_little rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_little rain.png" : "/weather_icon/cloudy_little rain.png";
+                case 6: // 빗방울눈날림
+                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : "/weather_icon/cloudy_snow_rain.png";
+                case 7: // 눈날림
+                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : "/weather_icon/cloudy_little snow.png";
+                default:
+                    return sky == "맑음" ? "/weather_icon/" + curSunStat + ".png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy.png" : "/weather_icon/cloudy.png";
+            }
+        },
         getCurrentT1H: (state) => {
             let obj = state.forecastWeather.filter((obj) => {
                 return obj.category == 'T1H' && obj.fcstTime == state.currentHour;
@@ -147,12 +172,12 @@ export default new Vuex.Store({
             })[0];
             return obj ? obj.fcstValue ? obj.fcstValue : '' : '';
         },
-        getCurrentSKY: (state) => {
+        getCurrentSKY: (state, getters) => {
             let obj = state.forecastWeather.filter((obj) => {
                 return obj.category == 'SKY' && obj.fcstTime == state.currentHour;
             })[0];
             let sky = obj ? obj.fcstValue ? obj.fcstValue : '' : '';
-            return sky == '' ? "없음" : parseInt(sky) <= 5 ? "맑음" : parseInt(sky) <= 8 ? "구름많음" : "흐림"
+            return getters.getSkyDesc(sky);
         },
         getCurrentREH: (state) => {
             let obj = state.forecastWeather.filter((obj) => {
@@ -197,13 +222,31 @@ export default new Vuex.Store({
             })[0];
             return obj ? obj.fcstValue ? obj.fcstValue : '' : '';
         },
-        getNextNhSummary: (state) => (time) => {
-            let nextHour = "" + (parseInt(state.currentHour) + (time * 100));
-            nextHour = nextHour.length < 4 ? "0" + nextHour : nextHour;
-
-            return state.forecastWeather.filter((obj) => {
-                return (obj.category == 'T1H' || obj.category == 'SKY' || obj.category == 'PTY') && obj.fcstTime == nextHour;
-            });
+        getNextHour: (state) => (time) => {
+            let nextHour = "" + (parseInt(state.currentHour) + (time*100));
+            nextHour = nextHour == "2400" ? "0000" : nextHour;
+            return nextHour.length < 4 ? "0" + nextHour : nextHour;
+        },
+        getNhArr: (state, getters) => {
+            let resultArr = [];
+            for (var i = 1; i < 6; i++) {
+                let nextHour = getters.getNextHour(i);
+                let temp = state.forecastWeather.filter((obj) => {
+                    return (obj.category == 'T1H' || obj.category == 'SKY' || obj.category == 'PTY')
+                        && obj.fcstTime == nextHour;
+                }).reduce((newObj, obj) => {
+                    newObj[obj.category] = obj.fcstValue;
+                    newObj['date'] = obj.fcstDate;
+                    newObj['time'] = obj.fcstTime;
+                    return newObj;
+                }, {});
+                if (Object.keys(temp).length > 0) {
+                    temp['skyDesc'] = getters.getSkyDesc(temp['SKY'], temp['PTY']);
+                    temp['skyIcon'] = getters.getSkyIcon(temp['skyDesc']);
+                    resultArr.push(temp);
+                }
+            }
+            return resultArr;
         }
     },
     actions: {
