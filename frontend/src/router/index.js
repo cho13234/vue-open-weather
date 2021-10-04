@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
-import Detail from '../views/Detail.vue'
+import InsightSatelite from '../views/InsightSatelite.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +12,9 @@ const routes = [
     component: Main
   },
   {
-    path: '/location/:id?',
-    name: 'Detail',
-    component: Detail
+    path: '/InsightSatelite',
+    name: 'InsightSatelite',
+    component: InsightSatelite
   }
 ]
 

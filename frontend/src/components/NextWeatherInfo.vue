@@ -1,15 +1,15 @@
 <template>
-    <v-card class="mx-auto" max-width="400px" width="95%" style="margin-top: 10px;">
-        <v-card-title style="font-family: 'Raleway', sans-serif; font-style: normal; font-weight: 600; font-size: 20px; line-height: 26px; color: #000000;">Today</v-card-title>
+    <v-card flat tile class="mx-auto" max-width="400px" width="95%" style="margin-top: 10px;">
+        <v-card-title style="font-family: 'Raleway', sans-serif; font-style: normal; font-weight: 600; font-size: 20px; line-height: 26px; color: #000000; padding-top: 30px; padding-bottom: 20px;">Today</v-card-title>
         <v-card-text style="padding-bottom: 30px;">
             <v-row align="center">
-                <v-col cols="2.4" align="center">
-                    <v-img max-width="40px" :src="nhArr[0] ? nhArr[0].skyIcon : ''" contain height="73px"></v-img>
-                    <span class="bottom-t1h-bold">{{ nhArr[0] ? nhArr[0].T1H : 0 }}&deg;</span>
+                <v-col cols="2.4" align="center" v-for="(item, index) in nhArr" :key="index">
+                    <v-img max-width="40px" :src="item ? item.skyIcon : ''" contain height="73px"></v-img>
+                    <span class="bottom-t1h-bold">{{ item ? item.T1H : 0 }}&deg;</span>
                     <br/>
-                    <span class="bottom-time-regular">{{ getHourDesc(nhArr[0]) }}</span>
+                    <span class="bottom-time-regular">{{ getHourDesc(item) }}</span>
                 </v-col>
-                <v-col cols="2.4" align="center">
+                <!-- <v-col cols="2.4" align="center">
                     <v-img max-width="40px" :src="nhArr[1] ? nhArr[1].skyIcon : ''" contain height="73px"></v-img>
                     <span class="bottom-t1h-bold">{{ nhArr[1] ? nhArr[1].T1H : 0 }}&deg;</span>
                     <br/>
@@ -32,7 +32,7 @@
                     <span class="bottom-t1h-bold">{{ nhArr[4] ? nhArr[4].T1H : 0 }}&deg;</span>
                     <br/>
                     <span class="bottom-time-regular">{{ getHourDesc(nhArr[4]) }}</span>
-                </v-col>
+                </v-col> -->
             </v-row>
         </v-card-text>
     </v-card>
@@ -50,16 +50,7 @@ export default {
         ...mapGetters({
             currentHour: 'getCurrentHour',
             nhArr: 'getNhArr',
-            // getSkyDesc: 'getSkyDesc'
         }),
-        // nhArrSkyIcon() {
-        //     let arr = [];
-        //     for (var i in this.nhArr) {
-        //         if (Object.keys(this.nhArr[i]).length <= 0) return ["", "", "", "", ""];
-        //         arr.push(this.getSkyIcon(this.getSkyDesc(this.nhArr[i]['SKY'], this.nhArr[i]['PTY'])));
-        //     }
-        //     return arr.length > 0 ? arr : ["", "", "", "", ""];
-        // }
     },
     methods: {
         getHourDesc(obj) {
@@ -69,32 +60,6 @@ export default {
             let hour = obj.time.slice(0,2) + ":00";
             return date + " " + hour;
         },
-        // getSkyDesc(sky) {
-        //     return sky == '' ? "없음" : parseInt(sky) == 1 ? "맑음" : parseInt(sky) == 3 ? "구름많음" : parseInt(sky) == 4 ? "흐림" : "없음";
-        //     // return sky == '' ? "없음" : parseInt(sky) <= 5 ? "맑음" : parseInt(sky) <= 8 ? "구름많음" : "흐림";
-        // },
-        getSkyIcon(sky, pty) {
-            let curSunStat = (parseInt(this.currentHour) > 20 || parseInt(this.currentHour) <= 6) ? 'moon' : 'sunny';
-
-            switch(parseInt(pty)) {
-                case 0:
-                    return sky == "맑음" ? "/weather_icon/" + curSunStat + ".png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy.png" : "/weather_icon/cloudy.png";
-                case 1: // 비
-                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_heavy rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_heavy rain.png" : "/weather_icon/cloudy_heavy rain.png";
-                case 2: // 비/눈
-                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : "/weather_icon/cloudy_snow_rain.png";
-                case 3: // 눈
-                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : "/weather_icon/cloudy_heavy snow.png";
-                case 5: // 빗방울
-                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_little rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_little rain.png" : "/weather_icon/cloudy_little rain.png";
-                case 6: // 빗방울눈날림
-                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : "/weather_icon/cloudy_snow_rain.png";
-                case 7: // 눈날림
-                    return sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : "/weather_icon/cloudy_little snow.png";
-                default:
-                    return sky == "맑음" ? "/weather_icon/" + curSunStat + ".png" : sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy.png" : "/weather_icon/cloudy.png";
-            }
-        }
     }
 }
 </script>

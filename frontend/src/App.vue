@@ -1,18 +1,28 @@
 <template>
     <v-app style="background-color: rgb(233,233,233);">
         <v-app-bar app flat color="transparent">
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
-            
-            <v-spacer></v-spacer>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             
             <v-toolbar-title style="font-family: 'Ubuntu', sans-serif; font-weight: 300; font-size: 22px; line-height: 25.28px">Weather</v-toolbar-title>
             
-            <v-spacer></v-spacer>
-            
-            <v-btn icon>
-            <v-icon>mdi-chevron-down</v-icon>
-            </v-btn>
+            <!-- <v-btn icon>
+                <v-icon>mdi-chevron-down</v-icon>
+            </v-btn> -->
         </v-app-bar>
+        
+        <v-navigation-drawer v-model="drawer" absolute temporary>
+            <v-list nav dense>
+                <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+                    <v-list-item>
+                        <v-list-item-title class="font-regular" @click="goToView({name: 'Main'})">날씨예보</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title class="font-regular" @click="goToView({name: 'InsightSatelite'})">위성사진</v-list-item-title>
+                    </v-list-item>
+                </v-list-item-group>
+            </v-list>
+        </v-navigation-drawer>
+
         <v-main>
             <router-view/>
         </v-main>
@@ -26,12 +36,25 @@ export default {
     name: 'App',
 
     data: () => ({
-        //
+        drawer: false,
+        group: null
     }),
     computed: {
         ...mapGetters({
             locations: 'getLocations',
         })
+    },
+    methods: {
+        goToView(routeObj) {
+            let objKeys = Object.keys(routeObj);
+
+            for (var i in objKeys) {
+                if (this.$router.currentRoute[objKeys[i]] === routeObj[objKeys[i]]) {
+                    this.$router.go(this.$router.currentRoute);
+                }
+            }
+            this.$router.push(routeObj);
+        }
     }
 };
 </script>
@@ -43,5 +66,8 @@ export default {
 
 .font-regular {
     font-family: 'Noto Sans Kr', 'Ubuntu', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
 }
 </style>
