@@ -1,148 +1,107 @@
 <template>
-    <div>
-        <div class="header-temperature">
-            <span class="temperature-text">{{ t1h }}</span>
-            <span class="temperature-text-oppo">o</span>
-        </div>
-        <span class="temperature-text-weather">|{{ sky }}</span>
-        <img class="weather-icon-big" :src="'/' + skyIcon" alt="">
-        <span class="current-location">
-            Howdy, Alver
-        </span>
-        <v-select class="switch-location" v-model="currentLocationName" :items="locations" item-text="namekor" item-value="nameeng"></v-select>
-    </div>
+    <v-card class="mx-auto" max-width="400px" width="95%" style="margin-top: 10px;">
+        <v-card-text style="padding-top: 20px; padding-bottom: 30px;">
+            <v-row align="center">
+                <v-col cols="8">
+                    <span style="padding-left: 10px; font-family: 'Montserrat', sans-serif; font-style: normal; font-weight: normal; font-size: 42px; line-height: 44px; color: #000000;">
+                        {{ t1h }}&deg;
+                    </span>
+                    <span style="font-family: 'Nanum Myeongjo', sans-serif; font-style: normal; font-weight: normal; font-size: 18px; font-weight: 300; color: #000000;">
+                         {{ sky }}
+                    </span>
+                </v-col>
+                <v-col cols="4" align="center">
+                    <v-img :src="skyIcon" contain height="73px"></v-img>
+                </v-col>
+            </v-row>
+            <v-row align="center">
+                <v-col cols="12" >
+                    <span style="padding-left: 10px; font-family: 'Raleway', sans-serif; font-style: normal; font-weight: 600; font-size: 20px; line-height: 26px; color: #000000;">
+                        {{ currentLocation.nameeng }}, Korea
+                    </span>
+                </v-col>
+            </v-row>
+            <v-row align="center">
+                <v-col cols="4" align="center">
+                    <span class="bottom_value_bold">{{ reh }}%</span>
+                    <br/>
+                    <span class="bottom_label_regular">Humidity</span>
+                </v-col>
+                <v-col cols="4" align="center">
+                    <span class="bottom_value_bold">{{ vec }}</span>
+                    <br/>
+                    <span class="bottom_label_regular">W Direction</span>
+                </v-col>
+                <v-col cols="4" align="center">
+                    <span class="bottom_value_bold">{{ wsd }}</span>
+                    <br/>
+                    <span class="bottom_label_regular">Wind</span>
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'CurrentWeatherInfo',
-    data() {
-        var date = new Date();
-        return {
-            'currentLocationName': '',
-            'currentHour': '' + date.getHours() + '00'
-        }
-    },
-    created() {
-        this.getWeatherNowcast(this.currentLocation);
-        this.getWeatherForecast(this.currentLocation);
-    },
     mounted() {
         console.log(this.currentLocation)
         this.currentLocationName = this.currentLocation.nameeng;
-        console.log(JSON.stringify(this.currentWeather));
     },
     computed: {
         ...mapGetters({
             currentLocation: 'getCurrentLocation',
-            currentWeather: 'getCurrentWeatherInfo',
             forecastWeather: 'getForecastWeather',
-            locations: 'getLocations',
+            t1h: 'getCurrentT1H',
+            sky: 'getCurrentSKY',
+            reh: 'getCurrentREH',
+            vec: 'getCurrentVEC',
+            pty: 'getCurrentPTY',
+            wsd: 'getCurrentWSD',
+            currentHour: 'getCurrentHour'
         }),
-        t1h() {
-            return this.currentWeather ? this.currentWeather.t1h ? this.currentWeather.t1h.fcstValue ? this.currentWeather.t1h.fcstValue : '' : '' : '';
-        },
-        sky() {
-            return parseInt(this.currentWeather.sky.fcstValue) <= 5 ? "맑음" : parseInt(this.currentWeather.sky.fcstValue) <= 8 ? "구름많음" : "흐림";
-        },
         skyIcon() {
-            return this.sky == "맑음" ? "sunny.png" : this.sky == "구름많음" ? "half_sun.png" : "cloudy_grey.png";
+            let curSunStat = (parseInt(this.currentHour) > 20 || parseInt(this.currentHour) <= 6) ? 'moon' : 'sunny';
+
+            switch(parseInt(this.pty)) {
+                case 0:
+                    return this.sky == "맑음" ? "/weather_icon/" + curSunStat + ".png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy.png" : "/weather_icon/cloudy.png";
+                case 1: // 비
+                    return this.sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_heavy rain.png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_heavy rain.png" : "/weather_icon/cloudy_heavy rain.png";
+                case 2: // 비/눈
+                    return this.sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : "/weather_icon/cloudy_snow_rain.png";
+                case 3: // 눈
+                    return this.sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : "/weather_icon/cloudy_heavy snow.png";
+                case 5: // 빗방울
+                    return this.sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_little rain.png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_little rain.png" : "/weather_icon/cloudy_little rain.png";
+                case 6: // 빗방울눈날림
+                    return this.sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow_rain.png" : "/weather_icon/cloudy_snow_rain.png";
+                case 7: // 눈날림
+                    return this.sky == "맑음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy_snow.png" : "/weather_icon/cloudy_little snow.png";
+                default:
+                    return this.sky == "맑음" ? "/weather_icon/" + curSunStat + ".png" : this.sky == "구름많음" ? "/weather_icon/half_" + curSunStat + "_cloudy.png" : "/weather_icon/cloudy.png";
+            }
         }
-    },
-    methods: {
-        ...mapActions({
-            getWeatherForecast: 'fetchWeatherForecast',
-            getWeatherNowcast: 'fetchWeatherNowcast'
-        })
     }
 }
 </script>
 
 <style>
-.header-temperature {
-    position: absolute; width: 58px; height: 50px; left: 24px; top: 137px;
-}
-.temperature-text {
-    position: absolute;
-    width: 52px;
-    height: 44px;
-    left: 0px;
-    top: 6px;
-
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 42px;
-    line-height: 44px;
-
-    color: #000000;
-}
-.temperature-text-oppo {
-    position: absolute;
-    width: 11px;
-    height: 18px;
-    left: 47px;
-    top: 0px;
-
-    font-family: Montserrat;
-    font-style: normal;
+.bottom_value_bold {
+    font-family: 'Raleway', sans-serif;
     font-weight: 600;
     font-size: 16px;
-    line-height: 18px;
-
-    color: #000000;
-}
-.temperature-text-weather {
-    position: absolute;
-    left: 22.93%;
-    right: 50.93%;
-    top: 19.21%;
-    bottom: 78.33%;
-
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 20px;
-
-    color: #000000;
-}
-.weather-icon-big {
-    position: absolute;
-    width: 80px;
-    height: 77.95px;
-    left: 267px;
-    top: 123px;
-}
-.wheather-icon-big-inner {
-    position: absolute;
-    width: 80px;
-    height: 55.38px;
-    left: 0px;
-    top: 0px;
-}
-.current-location {
-    position: absolute;
-    width: 135px;
-    height: 26px;
-    left: 24px;
-    top: 221px;
-
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
     line-height: 26px;
-
     color: #000000;
 }
-.switch-location {
-    position: absolute;
-    width: 176px;
-    height: 24px;
-    left: 24px;
-    top: 253px;
+.bottol_label_regular {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    color: #000000;
 }
 </style>

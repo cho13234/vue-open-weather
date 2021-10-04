@@ -98,4 +98,35 @@ public class RestWeatherController {
 		return res;
 	}
     
+    @GetMapping("/getCtprvnMesureList")
+	public ResponseEntity<Map<String, Object>>getCtprvnMesureList(@RequestParam String pageNo, @RequestParam String numOfRows, 
+			@RequestParam String itemCode) throws UnsupportedEncodingException, URISyntaxException {
+		//String baseUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
+		String baseUrl = "http://apis.data.go.kr/B552584/ArpltnStatsSvc/getCtprvnMesureLIst";
+		String serviceKey = "0Qq4%2F%2BtFazjNl72XbGzxRAZ8kEn1dN%2B7NRrEAtEzpVE8GBCwRchbAVTO%2BUZJEMvXxLR7Y6yxj3GqSQwkwkBd3A%3D%3D";
+		//String numOfRows = "50";
+		//String pageNo = "1";
+		String returnType = "json";
+		String dataGubun = "HOUR";
+		String searchCondition = "WEEK";
+		
+		String serviceKeyDecoded = URLDecoder.decode(serviceKey, "UTF-8");
+		
+		StringBuilder urlBuilder = new StringBuilder(baseUrl);
+		urlBuilder.append("?serviceKey=" + URLEncoder.encode(serviceKeyDecoded, "UTF-8"))
+			.append("&pageNo=" + pageNo)
+			.append("&numOfRows=" + numOfRows)
+			.append("&returnType=" + returnType)
+			.append("&itemCode=" + itemCode)
+			.append("&dataGubun=" + dataGubun)
+			.append("&searchCondition=" + searchCondition);
+		
+		System.out.println(urlBuilder.toString());
+		
+		ResponseEntity<Map<String, Object>> res = apiService.get(new URI(urlBuilder.toString()), HttpHeaders.EMPTY);
+		
+		System.out.println(res);
+		
+		return res;
+	}
 }
